@@ -54,13 +54,24 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Optional<User>> loginUser(@RequestHeader("username") String userName) {
-        return new ResponseEntity<>(userDB.findByUsername(userName), HttpStatus.OK);
+    @PostMapping("/login")
+    public ResponseEntity<Void> loginUser(@RequestHeader("username") String username,
+                                       @RequestHeader("password") String password) {
+        var user = userDB.findByUsername(username);
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Optional<User>> registerUser(@RequestHeader("username") String userName, @RequestHeader("password") String password) {
-        return new ResponseEntity<>(userDB.findByUsername(userName), HttpStatus.OK);
+    public ResponseEntity<Void> registerUser(@RequestHeader("username") String username,
+                                             @RequestHeader("password") String password) {
+        var user = userDB.findByUsername(username);
+        if (user.isEmpty()) {
+            userDB.save(new User(username, password));
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 }
