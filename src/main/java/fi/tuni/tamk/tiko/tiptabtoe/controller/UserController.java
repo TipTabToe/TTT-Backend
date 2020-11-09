@@ -18,40 +18,10 @@ public class UserController {
     @Autowired
     UserRepository userDB;
 
-    @GetMapping("")
-    @Transactional
-    public Iterable<User> getUsers() {
-        return userDB.findAll();
-    }
-
-    @PostMapping("")
-    @Transactional
-    public ResponseEntity<User> addUser(@RequestBody User u, UriComponentsBuilder uri) {
-        HttpHeaders headers = new HttpHeaders();
-        userDB.save(u);
-        headers.setLocation(uri.path("/{id}").buildAndExpand(u.getId()).toUri());
-        return new ResponseEntity<>(u, headers, HttpStatus.CREATED);
-    }
-
     @GetMapping("/{id}")
     @Transactional
     public Optional<User> getUser(@PathVariable long id) {
         return userDB.findById(id);
-    }
-
-    @PatchMapping("/{id}")
-    @Transactional
-    public ResponseEntity<User> updateUser(@RequestBody User u, UriComponentsBuilder uri) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(uri.path("/{id}").buildAndExpand(u.getId()).toUri());
-        return new ResponseEntity<>(userDB.save(u), headers, HttpStatus.ACCEPTED);
-    }
-
-    @DeleteMapping("/{id}")
-    @Transactional
-    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-        userDB.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/login")
