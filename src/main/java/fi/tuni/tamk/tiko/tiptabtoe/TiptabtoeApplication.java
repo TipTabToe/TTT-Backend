@@ -37,10 +37,27 @@ public class TiptabtoeApplication implements CommandLineRunner {
 		userDB.save(new User("root", "root"));
 		userDB.findAll().forEach(System.out::println);
 
+		for (int i = 0; i < 8; i++) {
+			categoryDB.save(new QuestionCategory("Category " + (i + 1)));
+		}
+
+		String correctAnswer = "Answer 1";
+		var answers = new ArrayList<String>(Arrays.asList(correctAnswer, "Answer 2", "Answer 3", "Answer 4"));
+
+		categoryDB.findAll().forEach(c -> {
+			for (int i = 0; i < 15; i++) {
+				questionDB.save(new Question(
+						"Question " + (i + 1),
+						correctAnswer,
+						answers,
+						c
+				));
+			}
+		});
+		/*
 		categoryDB.save(new QuestionCategory("Transportation"));
 		categoryDB.save(new QuestionCategory("Garbage"));
 		categoryDB.save(new QuestionCategory("Food"));
-		categoryDB.findAll().forEach(System.out::println);
 
 		questionDB.save(new Question("Which form of transportation is the best for environment?",
 				"Bus",
@@ -53,6 +70,8 @@ public class TiptabtoeApplication implements CommandLineRunner {
 				new ArrayList<>(Arrays.asList("Esa", "Ase", "Sea", "Aes")),
 				categoryDB.findByName("Garbage"))
 		);
+		*/
+		categoryDB.findAll().forEach(System.out::println);
 		questionDB.findAll().forEach(System.out::println);
 	}
 
