@@ -1,15 +1,26 @@
 package fi.tuni.tamk.tiko.tiptabtoe.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fi.tuni.tamk.tiko.tiptabtoe.repository.QuestionCategoryRepository;
+import fi.tuni.tamk.tiko.tiptabtoe.repository.StatisticRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class User {
+    @Transient
+    @Autowired
+    private StatisticRepository statisticDB;
+    @Transient
+    @Autowired
+    private QuestionCategoryRepository categoryDB;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,6 +30,8 @@ public class User {
     @JsonIgnore
     private String password;
     private int points;
+    @OneToMany
+    private List<Statistic> statistics;
 
     public User() {}
 
@@ -26,6 +39,8 @@ public class User {
         this.username = username;
         this.password = password;
         this.points = 0;
+        statistics = new ArrayList<>();
+        categoryDB.findAll().forEach(c -> statistics.add(statisticDB.save(new Statistic(c))));
     }
 
     public long getId() {
@@ -61,7 +76,24 @@ public class User {
     }
 
     public void addPoints(int points) {
-        this.points += points;
+        if (points > 0) this.points += points;
+    }
+
+    public List<Statistic> getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(List<Statistic> statistics) {
+        this.statistics = statistics;
+    }
+
+    public void updateStatistics(QuestionCategory category, int answers, int correctAnswers) {
+        statistics.forEach(s -> {
+            if (s.getCategory().getId() == category.getId()) {
+                s.addStats(answers, correctAnswers);
+                statisticDB.save(s);
+            }
+        });
     }
 
     @Override
