@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: circles
+      MYSQL_USER: user_name
+      MYSQL_PASSWORD: pass_word
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+
+  spring-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3500:8080"
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/circles?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: user_name
+      SPRING_DATASOURCE_PASSWORD: pass_word
+volumes:
+  db-data:
