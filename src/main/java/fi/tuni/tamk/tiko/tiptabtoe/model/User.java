@@ -6,21 +6,12 @@ import fi.tuni.tamk.tiko.tiptabtoe.repository.StatisticRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 public class User {
-    @Transient
-    @Autowired
-    private StatisticRepository statisticDB;
-    @Transient
-    @Autowired
-    private QuestionCategoryRepository categoryDB;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -32,6 +23,12 @@ public class User {
     private int points;
     @OneToMany
     private List<Statistic> statistics;
+    @ElementCollection
+    private List<Long> friends;
+    @ElementCollection
+    private List<Long> pendingFriends; // Users this has invited.
+    @ElementCollection
+    private List<Long> pendingRequests; // Users that have invited this.
 
     public User() {}
 
@@ -40,7 +37,9 @@ public class User {
         this.password = password;
         this.points = 0;
         statistics = new ArrayList<>();
-        categoryDB.findAll().forEach(c -> statistics.add(statisticDB.save(new Statistic(c))));
+        friends = new ArrayList<>();
+        pendingFriends = new ArrayList<>();
+        pendingRequests = new ArrayList<>();
     }
 
     public long getId() {
@@ -87,13 +86,28 @@ public class User {
         this.statistics = statistics;
     }
 
-    public void updateStatistics(QuestionCategory category, int answers, int correctAnswers) {
-        statistics.forEach(s -> {
-            if (s.getCategory().getId() == category.getId()) {
-                s.addStats(answers, correctAnswers);
-                statisticDB.save(s);
-            }
-        });
+    public List<Long> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<Long> friends) {
+        this.friends = friends;
+    }
+
+    public List<Long> getPendingFriends() {
+        return pendingFriends;
+    }
+
+    public void setPendingFriends(List<Long> pendingFriends) {
+        this.pendingFriends = pendingFriends;
+    }
+
+    public List<Long> getPendingRequests() {
+        return pendingRequests;
+    }
+
+    public void setPendingRequests(List<Long> pendingRequests) {
+        this.pendingRequests = pendingRequests;
     }
 
     @Override

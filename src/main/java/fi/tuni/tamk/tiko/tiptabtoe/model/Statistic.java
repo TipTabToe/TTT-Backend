@@ -10,9 +10,7 @@ public class Statistic {
     private long id;
     @OneToOne
     private QuestionCategory category;
-    @NotBlank
     private int answers;
-    @NotBlank
     private int correctAnswers;
 
     public Statistic() {}
@@ -58,5 +56,15 @@ public class Statistic {
     public void addStats(int answers, int correctAnswers) {
         this.answers += answers;
         this.correctAnswers += correctAnswers;
+    }
+
+    @Override
+    public String toString() {
+        return "Statistic{" +
+                "id=" + id +
+                ", category=" + category +
+                ", answers=" + answers +
+                ", correctAnswers=" + correctAnswers +
+                '}';
     }
 }

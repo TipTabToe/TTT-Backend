@@ -6,6 +6,8 @@ import fi.tuni.tamk.tiko.tiptabtoe.model.User;
 import fi.tuni.tamk.tiko.tiptabtoe.repository.QuestionCategoryRepository;
 import fi.tuni.tamk.tiko.tiptabtoe.repository.QuestionRepository;
 import fi.tuni.tamk.tiko.tiptabtoe.repository.UserRepository;
+import fi.tuni.tamk.tiko.tiptabtoe.service.GameService;
+import fi.tuni.tamk.tiko.tiptabtoe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +29,10 @@ public class TiptabtoeApplication implements CommandLineRunner {
 	QuestionRepository questionDB;
 	@Autowired
 	QuestionCategoryRepository categoryDB;
+	@Autowired
+	UserService userService;
+	@Autowired
+	GameService gameService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TiptabtoeApplication.class, args);
@@ -34,15 +40,12 @@ public class TiptabtoeApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		userDB.save(new User("root", "root"));
-		userDB.findAll().forEach(System.out::println);
-
 		for (int i = 0; i < 8; i++) {
 			categoryDB.save(new QuestionCategory("Category " + (i + 1)));
 		}
 
 		String correctAnswer = "Answer 1";
-		var answers = new ArrayList<String>(Arrays.asList(correctAnswer, "Answer 2", "Answer 3", "Answer 4"));
+		var answers = new ArrayList<>(Arrays.asList(correctAnswer, "Answer 2", "Answer 3", "Answer 4"));
 
 		categoryDB.findAll().forEach(c -> {
 			for (int i = 0; i < 15; i++) {
@@ -54,25 +57,17 @@ public class TiptabtoeApplication implements CommandLineRunner {
 				));
 			}
 		});
-		/*
-		categoryDB.save(new QuestionCategory("Transportation"));
-		categoryDB.save(new QuestionCategory("Garbage"));
-		categoryDB.save(new QuestionCategory("Food"));
 
-		questionDB.save(new Question("Which form of transportation is the best for environment?",
-				"Bus",
-				new ArrayList<>(Arrays.asList("Bus", "Monster truck", "Tractor", "Tank")),
-				categoryDB.findByName("Transportation"))
-		);
+		userService.newUser("root", "root");
+		userService.newUser("toor", "toor");
 
-		questionDB.save(new Question("Which one of these is Esa?",
-				"Esa",
-				new ArrayList<>(Arrays.asList("Esa", "Ase", "Sea", "Aes")),
-				categoryDB.findByName("Garbage"))
-		);
-		*/
+		userDB.findAll().forEach(System.out::println);
 		categoryDB.findAll().forEach(System.out::println);
-		questionDB.findAll().forEach(System.out::println);
+		gameService.createGame();
+		gameService.createGame();
+		String uuid = gameService.createGame();
+		System.out.println(gameService.findByUUID(uuid));
+		// questionDB.findAll().forEach(System.out::println);
 	}
 
 	@Bean

@@ -17,3 +17,24 @@ password: root
 POST http://localhost:8080/api/users/register
 username: pipsa
 password: possu
+
+### Should return root user
+GET http://localhost:8080/api/users/1
+
+### Should return toor user
+GET http://localhost:8080/api/users/2
+
+### Should return list of all the users
+GET http://localhost:8080/api/users
+
+###
+POST http://localhost:8080/api/users/1/addfriend/2
+
+###
+POST http://localhost:8080/api/users/2/acceptfriend/1
+
+###
+POST http://localhost:8080/api/users/1/addpoints
+catId: 1
+answers: 5
+correctAnswers: 3
