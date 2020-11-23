@@ -13,7 +13,7 @@ services:
       - db-data:/var/lib/mysql
 
   backend:
-    image: heikkikangas/tiptabtoe-backend
+    image: heikkikangas/ttt-backend
     ports:
       - "3500:8080"
     restart: unless-stopped
@@ -23,5 +23,15 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/tiptabtoe?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: user_name
       SPRING_DATASOURCE_PASSWORD: pass_word
+
+  admin:
+    image: heikkikangas/ttt-admin
+    restart: unless-stopped
+    ports:
+      - "3550:80"
+    depends_on:
+      - db
+      - backend
+
 volumes:
   db-data:
