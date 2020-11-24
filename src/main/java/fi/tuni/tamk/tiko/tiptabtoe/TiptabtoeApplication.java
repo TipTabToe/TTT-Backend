@@ -40,6 +40,7 @@ public class TiptabtoeApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		/*
 		for (int i = 0; i < 8; i++) {
 			categoryDB.save(new QuestionCategory("Category " + (i + 1)));
 		}
@@ -63,11 +64,12 @@ public class TiptabtoeApplication implements CommandLineRunner {
 
 		userDB.findAll().forEach(System.out::println);
 		categoryDB.findAll().forEach(System.out::println);
+		*/
 		gameService.createGame();
 		gameService.createGame();
 		String uuid = gameService.createGame();
 		System.out.println(gameService.findByUUID(uuid));
-		// questionDB.findAll().forEach(System.out::println);
+
 	}
 
 	@Bean

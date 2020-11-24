@@ -1,7 +1,6 @@
 package fi.tuni.tamk.tiko.tiptabtoe.service;
 
 import fi.tuni.tamk.tiko.tiptabtoe.model.Game;
-import fi.tuni.tamk.tiko.tiptabtoe.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
