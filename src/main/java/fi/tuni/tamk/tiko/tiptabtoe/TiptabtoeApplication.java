@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication//(exclude = {SecurityAutoConfiguration.class})
 public class TiptabtoeApplication implements CommandLineRunner {
 
 	@Autowired
