@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class TiptabtoeApplication implements CommandLineRunner {
 
 	@Autowired
@@ -64,14 +64,14 @@ public class TiptabtoeApplication implements CommandLineRunner {
 
 		userDB.findAll().forEach(System.out::println);
 		categoryDB.findAll().forEach(System.out::println);
-		*/
 		gameService.createGame();
 		gameService.createGame();
 		String uuid = gameService.createGame();
 		System.out.println(gameService.findByUUID(uuid));
+			*/
 
 	}
-
+/*
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
@@ -85,4 +85,6 @@ public class TiptabtoeApplication implements CommandLineRunner {
 			}
 		};
 	}
+
+ */
 }

@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
