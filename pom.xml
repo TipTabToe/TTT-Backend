@@ -8,6 +8,7 @@
 		<version>2.2.6.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<packaging>jar</packaging>
 	<groupId>fi.tuni.tamk.tiko</groupId>
 	<artifactId>tiptabtoe</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -77,7 +78,83 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+
+				<configuration>
+					<fork>true</fork>
+					<mainClass>fi.tuni.tamk.tiko.tiptabtoe.TiptabtoeApplication</mainClass>
+					<layout>ZIP</layout>
+				</configuration>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>fi.tuni.tamk.tiko.tiptabtoe.TiptabtoeApplication</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>shade-my-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>fi.tuni.tamk.tiko.tiptabtoe.TiptabtoeApplication</Main-Class>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		-->
+
 		</plugins>
 	</build>
 

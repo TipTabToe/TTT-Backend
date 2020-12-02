@@ -6,8 +6,8 @@ phases:
   build:
    commands:
      - echo Building
-     - mvn package
+     - mvn clean package spring-boot:repackage
 artifacts:
   files:
-    - '**/*'
+    - '**/*.jar'
   base-directory: 'target'
