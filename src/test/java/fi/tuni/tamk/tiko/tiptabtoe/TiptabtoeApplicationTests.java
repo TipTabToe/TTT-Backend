@@ -3,7 +3,7 @@ package fi.tuni.tamk.tiko.tiptabtoe;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class TiptabtoeApplicationTests {
 
 	@Test
