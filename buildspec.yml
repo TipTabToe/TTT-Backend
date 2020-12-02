@@ -10,4 +10,4 @@ env:
 artifacts:
   files:
     - '**/*'
-  base-directory: 'target/tiptabtoe'
+  base-directory: 'target'
