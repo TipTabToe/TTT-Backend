@@ -1,0 +1,13 @@
+version: 0.2
+env:
+  install:
+    runtime-versions:
+      java: corretto11
+  build:
+   commands:
+     - echo Building
+     - mvn package
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'target/tiptabtoe'
