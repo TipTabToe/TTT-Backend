@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -24,6 +26,14 @@ public class QuestionController {
     @Transactional
     public Iterable<Question> getQuestions() {
         return questionDB.findAll();
+    }
+
+    @GetMapping("/fromcategory/{catId}")
+    @Transactional
+    public Iterable<Question> getQuestions(@PathVariable long catId) {
+        var questions = new ArrayList<Question>();
+        questionDB.findAll().forEach(questions::add);
+        return questions.stream().filter(q -> q.getCategory().getId() == catId).collect(Collectors.toList());
     }
 
     @PostMapping("")
