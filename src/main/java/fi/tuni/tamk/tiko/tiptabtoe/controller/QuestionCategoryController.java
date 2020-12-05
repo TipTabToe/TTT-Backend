@@ -28,11 +28,8 @@ public class QuestionCategoryController {
 
     @PostMapping("")
     @Transactional
-    public ResponseEntity<QuestionCategory> addCategory(@RequestBody QuestionCategory c, UriComponentsBuilder uri) {
-        HttpHeaders headers = new HttpHeaders();
-        categoryDB.save(c);
-        headers.setLocation(uri.path("/{id}").buildAndExpand(c.getId()).toUri());
-        return new ResponseEntity<>(c, headers, HttpStatus.CREATED);
+    public ResponseEntity<QuestionCategory> addCategory(@RequestBody QuestionCategory c) {
+        return new ResponseEntity<>(categoryDB.save(c), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -43,10 +40,14 @@ public class QuestionCategoryController {
 
     @PatchMapping("/{id}")
     @Transactional
-    public ResponseEntity<QuestionCategory> updateCategory(@RequestBody QuestionCategory c, UriComponentsBuilder uri) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(uri.path("/{id}").buildAndExpand(c.getId()).toUri());
-        return new ResponseEntity<>(categoryDB.save(c), headers, HttpStatus.ACCEPTED);
+    public ResponseEntity<QuestionCategory> updateCategory(@PathVariable long id,
+                                                           @RequestBody QuestionCategory c) {
+        var cat = categoryDB.findById(id);
+        if (!cat.isEmpty()) {
+            cat.get().setName(c.getName());
+            categoryDB.save(cat.get());
+        }
+        return new ResponseEntity<>(cat.get(), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
