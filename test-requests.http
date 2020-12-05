@@ -13,6 +13,11 @@ POST http://localhost:8080/api/users/register
 username: root
 password: root
 
+###
+POST http://ttt-backend.eu-central-1.elasticbeanstalk.com/api/users/register
+username: root
+password: toor
+
 ### Should succeed with 201 on first time, fail with 406 the second time
 POST http://localhost:8080/api/users/register
 username: pipsa
