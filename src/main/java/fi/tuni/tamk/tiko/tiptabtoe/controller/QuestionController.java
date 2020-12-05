@@ -28,11 +28,8 @@ public class QuestionController {
 
     @PostMapping("")
     @Transactional
-    public ResponseEntity<Question> addQuestion(@RequestBody Question q, UriComponentsBuilder uri) {
-        HttpHeaders headers = new HttpHeaders();
-        questionDB.save(q);
-        headers.setLocation(uri.path("/{id}").buildAndExpand(q.getId()).toUri());
-        return new ResponseEntity<>(q, headers, HttpStatus.CREATED);
+    public ResponseEntity<Question> addQuestion(@RequestBody Question q) {
+        return new ResponseEntity<>(questionDB.save(q), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -43,10 +40,16 @@ public class QuestionController {
 
     @PatchMapping("/{id}")
     @Transactional
-    public ResponseEntity<Question> updateQuestion(@RequestBody Question q, UriComponentsBuilder uri) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(uri.path("/{id}").buildAndExpand(q.getId()).toUri());
-        return new ResponseEntity<>(questionDB.save(q), headers, HttpStatus.ACCEPTED);
+    public ResponseEntity<Question> updateQuestion(@PathVariable long id, @RequestBody Question q) {
+        var oldQ = questionDB.findById(id);
+        if (oldQ.isPresent()) {
+            oldQ.get().setQuestion(q.getQuestion());
+            oldQ.get().setAnswers(q.getAnswers());
+            oldQ.get().setCategory(q.getCategory());
+            oldQ.get().setCorrectAnswer(q.getCorrectAnswer());
+            questionDB.save(oldQ.get());
+        }
+        return new ResponseEntity<>(oldQ.get(), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
